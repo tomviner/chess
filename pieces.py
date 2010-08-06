@@ -1,9 +1,20 @@
-
 ALL_SQUARES = [(x, y) for x in range(1,9) for y in range(1,9)]
 
+class Colour():
+    WHITE = 0
+    BLACK = 1
+
+
 class Piece(object):
-    pass
-    
+    def __init__(self, colour):
+        assert colour in (0,1)
+        self.colour = colour
+        self.initial = Notation.initial_from_piece[self.__class__]
+        self.initial = (str.upper if self.colour else str.lower)(self.initial)
+        
+    def __str__(self):
+        return self.initial
+
 class King(Piece):
     def gen_moves(self, X, Y):
         a3by3 = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
@@ -49,3 +60,17 @@ class Pawn(Piece):
         yield X, Y+1
         if Y==2:
             yield X, Y+2
+
+
+class Notation():
+    piece_from_initial = {      
+        'K':King,
+        'Q':Queen,
+        'R':Rook,
+        'B':Bishop,
+        'N':Knight,
+        'P':Pawn,
+    }
+    initial_from_piece = dict((v, k) for k, v in piece_from_initial.items())
+
+
