@@ -1,4 +1,4 @@
-ALL_SQUARES = [(x, y) for x in range(1,9) for y in range(1,9)]
+ALL_SQUARES = ((x, y) for x in range(1,9) for y in range(1,9))
 
 class Colour():
     WHITE = 0
@@ -11,9 +11,20 @@ class Piece(object):
         self.colour = colour
         self.initial = Notation.initial_from_piece[self.__class__]
         self.initial = (str.upper if self.colour else str.lower)(self.initial)
-        
+
     def __str__(self):
         return self.initial
+
+    def __repr__(self):
+        return '<%s>' %self
+
+    def gen_moves(self, X, Y):
+        raise NotImplementedError
+
+    def gen_special_moves(self, X, Y, has_moved):
+        raise NotImplementedError
+
+
 
 class King(Piece):
     def gen_moves(self, X, Y):
@@ -24,17 +35,17 @@ class King(Piece):
         if orig:
             # castle
             pass
-        
-    
+
+
 class Queen(Piece):
     def gen_moves(self, X, Y):
         for move in Rook.gen_moves():
             yield move
         for move in Bishop.gen_moves():
             yield move
-    
-                
-class Rook(Piece): 
+
+
+class Rook(Piece):
     def gen_moves(self, X, Y):
         for x, y in ALL_SQUARES:
             if X==x or Y==y:
@@ -46,14 +57,14 @@ class Bishop(Piece):
         for x, y in ALL_SQUARES:
             if y-x == diff:
                 yield x, y
-        
+
 
 class Knight(Piece):
     def gen_moves(self, X, Y):
         for x, y in ALL_SQUARES:
             if set(map(abs, (X-x, Y-y))) == set([1, 2]):
                 yield x, y
-                
+
 
 class Pawn(Piece):
     def gen_moves(self, X, Y):
@@ -63,7 +74,7 @@ class Pawn(Piece):
 
 
 class Notation():
-    piece_from_initial = {      
+    piece_from_initial = {
         'K':King,
         'Q':Queen,
         'R':Rook,
