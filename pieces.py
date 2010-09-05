@@ -1,4 +1,4 @@
-ALL_SQUARES = ((x, y) for x in range(1,9) for y in range(1,9))
+ALL_SQUARES = [(x, y) for x in range(1,9) for y in range(1,9)]
 
 class Colour():
     WHITE = 0
@@ -43,7 +43,6 @@ class Queen(Piece):
             yield move
         for move in Bishop.gen_moves():
             yield move
-
 
 class Rook(Piece):
     def gen_moves(self, X, Y):
