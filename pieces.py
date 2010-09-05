@@ -1,22 +1,34 @@
+
 ALL_SQUARES = [(x, y) for x in range(1,9) for y in range(1,9)]
 
-class Colour():
-    WHITE = 0
-    BLACK = 1
+class Colour(object):
+    def __init__(self, initial_or_is_black):
+        if isinstance(initial_or_is_black, basestring):
+            self.is_black = initial_or_is_black.isupper()
+        else:
+            assert isinstance(initial_or_is_black, bool), initial_or_is_black
+        self.is_black = bool(initial_or_is_black)
 
+    def __nonzero__(self):
+        return self.is_black
 
 class Piece(object):
-    def __init__(self, colour):
-        assert colour in (0,1)
-        self.colour = colour
-        self.initial = Notation.initial_from_piece[self.__class__]
-        self.initial = (str.upper if self.colour else str.lower)(self.initial)
+    def __init__(self, initial=None, colour=None):
+        self.colour = Colour(colour)
+
+    @classmethod
+    def from_initial(cls, initial):
+        piece_class = notation.piece_from_initial(initial)
+        piece = piece_class(initial)
+        piece.initial = initial
+        return piece
+
 
     def __str__(self):
         return self.initial
 
     def __repr__(self):
-        return '<%s>' %self
+        return '<%s>' %self.__class__.__name__
 
     def gen_moves(self, X, Y):
         raise NotImplementedError
@@ -72,15 +84,4 @@ class Pawn(Piece):
             yield X, Y+2
 
 
-class Notation():
-    piece_from_initial = {
-        'K':King,
-        'Q':Queen,
-        'R':Rook,
-        'B':Bishop,
-        'N':Knight,
-        'P':Pawn,
-    }
-    initial_from_piece = dict((v, k) for k, v in piece_from_initial.items())
-
-
+import notation
