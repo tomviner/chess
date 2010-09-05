@@ -6,15 +6,16 @@ class Colour(object):
         if isinstance(initial_or_is_black, basestring):
             self.is_black = initial_or_is_black.isupper()
         else:
-            assert isinstance(initial_or_is_black, bool), initial_or_is_black
+            assert isinstance(initial_or_is_black, bool), '%r' %initial_or_is_black
         self.is_black = bool(initial_or_is_black)
 
     def __nonzero__(self):
         return self.is_black
 
 class Piece(object):
-    def __init__(self, initial=None, colour=None):
+    def __init__(self, colour):
         self.colour = Colour(colour)
+        self.initial = notation.initial_from_piece(self.__class__)
 
     @classmethod
     def from_initial(cls, initial):
