@@ -23,7 +23,15 @@ def initial_from_piece(piece, colour):
     >>> initial_from_piece(Queen, Colour('Q'))
     'Q'
     >>> initial_from_piece(Pawn, Colour(False))
-    'p'
+    'P'
     """
     return colour.do_case(initial_from_piece_dict[piece])
+
+UNICODE_CODEPOINT_RANGE = range(0x2654, 0x2660)
+UNICODE_CHAR_LIST = map(unichr, UNICODE_CODEPOINT_RANGE)
+
+class UNICODE_PIECE:
+    WK, WQ, WR, WB, WN, WP, \
+    BK, BQ, BR, BB, BN, BP, \
+        = UNICODE_CODEPOINT_RANGE
 

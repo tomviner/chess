@@ -1,45 +1,32 @@
-import string
 import random
 
-from django.utils.termcolors import colorize
+from colour import Colour
 
 ALL_SQUARES = [(x, y) for x in range(8) for y in range(8)]
 
-class Colour(object):
-    WHITE, BLACK = range(2)
-    def __init__(self, initial_or_is_black):
-        is_black = initial_or_is_black
-        if isinstance(initial_or_is_black, basestring):
-            is_black = initial_or_is_black.isupper()
-        else:
-            assert isinstance(initial_or_is_black, (bool, int)), '%r' %initial_or_is_black
-            assert initial_or_is_black in (0, 1), '%r' %initial_or_is_black
-        self.is_black = bool(is_black)
-
-    def __nonzero__(self):
-        return self.is_black
-
-    def __unicode__(self):
-        return 'BLACK' if self else 'WHITE'
-
-    def do_case(self, s):
-        return (string.upper if self else string.lower)(s)
-
 class Piece(object):
-    def __init__(self, colour=Colour.WHITE):
-        self.colour = Colour(colour)
-        self.initial = notation.initial_from_piece(self.__class__, self.colour)
+    def __init__(self, colour=Colour.WHITE, initial=None):
+        self.colour = colour if isinstance(colour, Colour) else Colour(colour)
+        self.initial = initial or notation.initial_from_piece(self.__class__, self.colour)
+        self.col_pc = self.colour.initial + self.initial.upper()
+        self.codepoint = getattr(notation.UNICODE_PIECE, self.col_pc)
+
+    @property
+    def as_char(self):
+        return unichr(self.codepoint)
+
+    @property
+    def as_html(self):
+        return '&%d;' %self.codepoint
 
     @staticmethod
     def from_initial(initial):
         piece_class = notation.piece_from_initial(initial)
-        piece = piece_class()
-        piece.initial = initial
-        piece.colour = Colour(initial)
+        piece = piece_class(colour=Colour(initial), initial=initial)
         return piece
 
     def __unicode__(self):
-        return self.initial
+        return self.as_char
 
     def __repr__(self):
         return '<%s %s>' %(self.__class__.__name__, self.colour)
@@ -53,6 +40,10 @@ class Piece(object):
             assert len(m) == 2, m
             if self.is_possible_move(m):
                 yield m
+
+    def solely_taking_moves(self, X, Y):
+        "solely implemented by Pawn subclass"
+        return []
 
     def basic_moves(self, X, Y):
         raise NotImplementedError
@@ -100,14 +91,20 @@ class Knight(Piece):
 
 
 class Pawn(Piece):
-    def basic_moves(self, X, Y):
+    def __init__(self, *args, **kwargs):
+        super(Pawn, self).__init__(*args, **kwargs)
         is_black = bool(self.colour)
-        direction = 1 if is_black else -1
-        pawn_start = 1 if is_black else 6
-        yield X, Y+direction
-        if Y==pawn_start:
-            yield X, Y+2*direction
+        self.direction = 1 if is_black else -1
+        self.pawn_start = 1 if is_black else 6
 
+    def basic_moves(self, X, Y):
+        yield X, Y+self.direction
+        if Y==self.pawn_start:
+            yield X, Y+2*self.direction
+
+    def solely_taking_moves(self, X, Y):
+        for dx in (1,-1):
+            yield X+dx, Y+self.direction
 
 #import here to avoid recursion
 import notation
