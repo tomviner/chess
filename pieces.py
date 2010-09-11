@@ -4,7 +4,14 @@ from colour import Colour
 
 ALL_SQUARES = [(x, y) for x in range(8) for y in range(8)]
 
+
+class TakesAreMovesError(Exception):
+    pass
+class IllegalMoveError(Exception):
+    pass
+
 class Piece(object):
+    can_jump = False
     def __init__(self, colour=Colour.WHITE, initial=None):
         self.colour = colour if isinstance(colour, Colour) else Colour(colour)
         self.initial = initial or notation.initial_from_piece(self.__class__, self.colour)
@@ -34,16 +41,23 @@ class Piece(object):
     def is_possible_move(self, xy):
         return xy in ALL_SQUARES
 
-    def gen_moves(self, X, Y):
+    def general_moves(self, X, Y):
         for m in self.basic_moves(X, Y):
             assert isinstance(m, tuple), m
             assert len(m) == 2, m
             if self.is_possible_move(m):
                 yield m
 
-    def solely_taking_moves(self, X, Y):
-        "solely implemented by Pawn subclass"
-        return []
+    def solely_capturing_moves(self, X, Y):
+        """solely implemented by Pawn subclass
+        all other pieces have take==move"""
+        raise TakesAreMovesError
+        
+    def general_capturing_moves(self, X, Y):
+        try:
+            return self.solely_capturing_moves(self, X, Y)
+        except TakesAreMovesError:
+            return general_moves(self, X, Y)
 
     def basic_moves(self, X, Y):
         raise NotImplementedError
@@ -84,6 +98,7 @@ class Bishop(Piece):
 
 
 class Knight(Piece):
+    can_jump = True
     def basic_moves(self, X, Y):
         for x, y in ALL_SQUARES:
             if set(map(abs, (X-x, Y-y))) == set([1, 2]):
@@ -93,16 +108,18 @@ class Knight(Piece):
 class Pawn(Piece):
     def __init__(self, *args, **kwargs):
         super(Pawn, self).__init__(*args, **kwargs)
-        is_black = bool(self.colour)
-        self.direction = 1 if is_black else -1
-        self.pawn_start = 1 if is_black else 6
+        is_white = bool(self.colour.is_white)
+        self.direction = 1 if is_white else -1
+        self.pawn_start = 1 if is_white else 6
 
     def basic_moves(self, X, Y):
+        if Y == self.pawn_start-self.direction:
+            raise IllegalMoveError
         yield X, Y+self.direction
         if Y==self.pawn_start:
             yield X, Y+2*self.direction
 
-    def solely_taking_moves(self, X, Y):
+    def solely_capturing_moves(self, X, Y):
         for dx in (1,-1):
             yield X+dx, Y+self.direction
 

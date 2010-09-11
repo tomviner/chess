@@ -13,3 +13,14 @@ Checkmate
 Drawing
 Resigning
 """
+
+START = """\
+rnbkqbnr
+pppppppp
+
+
+
+
+PPPPPPPP
+RNBQKBNR\
+"""
