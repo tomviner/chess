@@ -2,6 +2,8 @@ import unittest2 as unittest
 
 from colour import *
 from pieces import *
+from board import *
+from rules import *
 
 class ColourTest(unittest.TestCase):
     def testInit(self):
@@ -15,14 +17,52 @@ class ColourTest(unittest.TestCase):
             self.assertEquals(unicode(c), ['WHITE','BLACK'][bool(is_black)])
     def testPieceColour(self):
         self.assertEqual(bool(Rook(0).colour), Colour.WHITE)
+        self.assertEqual(Rook(Colour.WHITE).colour.is_black, False)
+        self.assertEqual(Rook(Colour.BLACK).colour.is_black, True)
 
 class PieceTest(unittest.TestCase):
     def testCanJump(self):
         self.assertEqual(King().can_jump, False)
         self.assertEqual(Knight().can_jump, True)
+
     def testSolelyCapturing(self):
         self.assertRaises(TakesAreMovesError, Queen().solely_capturing_moves, 4, 3)
-        with self.assertRaises(IllegalMoveError):
+        self.assertItemsEqual(Pawn(0).solely_capturing_moves(4, 3), [(3,4), (5,4)])
+
+    def testIllegalPosition(self):
+        with self.assertRaises(IllegalPositionError):
+            # pawn can't be behind starting position
             list(Pawn().general_moves(0, 0))
-        self.assertRaises(IllegalMoveError, lambda x,y:list(Pawn(Colour.WHITE).general_moves(x,y)), 0,0)
-        self.assertEqual(set(Pawn(0).solely_capturing_moves(4, 3)), set([(3,4), (5,4)]))
+
+    def testBasicRookMoves(self):
+        gen_ms = Rook().general_moves(0, 0)
+        cap_ms = Rook().general_capturing_moves(0, 0)
+        correct_moves = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7),
+                         (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0)]
+        self.assertItemsEqual(gen_ms, correct_moves)
+        self.assertItemsEqual(cap_ms, correct_moves)
+
+    def testBasicKingMoves(self):
+        ms = King().general_moves(0, 0)
+        correct_moves = [(0,1), (1,1), (1,0)]
+        self.assertItemsEqual(ms, correct_moves)
+
+    def testBasicPawnMoves(self):
+        ms = Pawn(Colour.WHITE).general_moves(0, 1)
+        self.assertItemsEqual(ms, [(0, 2), (0, 3)])
+
+        ms = Pawn(Colour.BLACK).general_moves(0, 1)
+        self.assertItemsEqual(ms, [(0, 0)])
+
+    def testCapturingPawnMoves(self):
+        ms = Pawn(Colour.WHITE).general_capturing_moves(5, 1)
+        self.assertItemsEqual(ms, [(4, 2), (6, 2)])
+
+class BoardTest(unittest.TestCase):
+    def testPlace(self):
+        b = Board()
+        with self.assertRaises(IllegalPositionError):
+            # board uses 0 to 7 squared
+            b.place((8, 8), Queen())
+        b.place((2,3), Rook())
+

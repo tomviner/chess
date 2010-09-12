@@ -1,4 +1,5 @@
-from pieces import *
+from pieces import Piece, King, Queen, Rook, Bishop, Knight, Pawn
+from colour import Colour
 
 piece_from_initial_dict = {
     'K':King,

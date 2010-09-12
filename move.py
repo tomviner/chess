@@ -1,12 +1,21 @@
+EMPTY_SQUARE = ' '
 
 class Move(object):
-    def __init__(self, startXY, endXY):
-        self.x1, self.y1 = startXY
-        self.x2, self.y2 = endXY
-        self.xy1 = startXY
-        self.xy2 = endXY
+    def __init__(self, start_square, end_xy, board):
+        self.square = start_square
+        self.piece = start_square.piece
+        self.x1, self.y1 = start_square.xy
+        self.x2, self.y2 = end_xy
+        self.xy1 = start_square.xy
+        self.xy2 = end_xy
         self.delta = self.x2-self.x1, self.y2-self.y1
         self.dx, self.dy = self.delta
+        self.board = board
+        self.board_occupied_squares = self.board.occupied
+        self.special_move = False
+
+    def __repr__(self):
+        return '<%r to %r>' %(self.square, self.xy2)
 
     @property
     def is_right_angle(self):
@@ -20,20 +29,45 @@ class Move(object):
     @property
     def unit_move(self):
         mx = max(abs(self.dx), abs(self.dy))
-        return dx/mx, dy/mx
+        return self.dx/mx, self.dy/mx
 
-    def path_clear(self, board):
-        assert self.is_right_angle() or self.is_diagonal(), \
-        'expecting a straight line move, got %d, %d' %self.delta
+    @property
+    def path_clear(self):
         unit = self.unit_move
-        move = self.xy1
-        occupied_squares = board.occupied_positions
-        while move != self.xy2:
+        move = list(self.xy1)
+        end_pos = list(self.xy2)
+        occupied_squares = self.board_occupied_squares
+        while move != end_pos:
             move[0] += unit[0]
             move[1] += unit[1]
-            if move == self.xy2:
+            if move == end_pos:
                 return True
-            if move in occupied_squares:
+            if tuple(move) in occupied_squares:
                 return False
         return True
 
+    @property
+    def valid_end(self):
+        end = self.board.look_in(self.xy2)
+        if end == EMPTY_SQUARE:
+            return True
+        if end.piece.colour == self.piece.colour:
+            # can't capture own piece
+            return False
+        elif end.piece.name == 'King':
+            # can't capture opponents King
+            return False
+        return True
+
+    @property
+    def is_legal(self):
+        if not (self.piece.can_jump or self.special_move):
+            assert self.is_right_angle or self.is_diagonal, \
+            'expecting a straight line move, got %d, %d' %self.delta
+
+        if not (self.piece.can_jump or self.path_clear):
+            return False
+
+        if not self.valid_end:
+            return False
+        return True

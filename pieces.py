@@ -2,13 +2,15 @@ import random
 
 from colour import Colour
 
-ALL_SQUARES = [(x, y) for x in range(8) for y in range(8)]
 
+ALL_SQUARES = [(x, y) for x in range(8) for y in range(8)]
+del x, y
 
 class TakesAreMovesError(Exception):
     pass
-class IllegalMoveError(Exception):
+class IllegalPositionError(Exception):
     pass
+
 
 class Piece(object):
     can_jump = False
@@ -17,6 +19,7 @@ class Piece(object):
         self.initial = initial or notation.initial_from_piece(self.__class__, self.colour)
         self.col_pc = self.colour.initial + self.initial.upper()
         self.codepoint = getattr(notation.UNICODE_PIECE, self.col_pc)
+        self.name = self.__class__.__name__
 
     @property
     def as_char(self):
@@ -35,36 +38,53 @@ class Piece(object):
     def __unicode__(self):
         return self.as_char
 
-    def __repr__(self):
-        return '<%s %s>' %(self.__class__.__name__, self.colour)
+    def __str__(self):
+        return self.as_char.encode('utf-8')
 
-    def is_possible_move(self, xy):
-        return xy in ALL_SQUARES
+    def __repr__(self):
+        return '<%s %s>' %(self.name, self.colour)
+
+    def __eq__(self, other):
+        return self.col_pc == other.col_pc
+
+    def is_possible_move(self, xy1, xy2):
+        return xy2 in ALL_SQUARES and xy1!=xy2
 
     def general_moves(self, X, Y):
+        """returns possible moves from subclass'.basic_moves
+        """
         for m in self.basic_moves(X, Y):
             assert isinstance(m, tuple), m
             assert len(m) == 2, m
-            if self.is_possible_move(m):
+            if self.is_possible_move((X,Y), m):
                 yield m
+
+    def general_capturing_moves(self, X, Y):
+        """return possible moves from subclasses'.solely_capturing_moves
+        or .general_moves.
+        Pawns have special capturing moves
+        all other pieces take with their basic moves"""
+        try:
+            for m in self.solely_capturing_moves(X, Y):
+                assert isinstance(m, tuple), m
+                assert len(m) == 2, m
+                if self.is_possible_move((X,Y), m):
+                    yield m
+        except TakesAreMovesError:
+            for m in self.general_moves(X, Y):
+                yield m
+
+    def basic_moves(self, X, Y):
+        """subclasses implement this generator to yield
+        their basic moves. excludes solely capturing moves (pawn)
+        http://en.wikipedia.org/wiki/Rules_of_chess#Basic_moves
+        """
+        raise NotImplementedError
 
     def solely_capturing_moves(self, X, Y):
         """solely implemented by Pawn subclass
         all other pieces have take==move"""
         raise TakesAreMovesError
-
-    def general_capturing_moves(self, X, Y):
-        try:
-            return self.solely_capturing_moves(self, X, Y)
-        except TakesAreMovesError:
-            return general_moves(self, X, Y)
-
-    def basic_moves(self, X, Y):
-        raise NotImplementedError
-
-    def gen_special_moves(self, X, Y, has_moved):
-        raise NotImplementedError
-
 
 
 class King(Piece):
@@ -114,7 +134,7 @@ class Pawn(Piece):
 
     def basic_moves(self, X, Y):
         if Y == self.pawn_start-self.direction:
-            raise IllegalMoveError
+            raise IllegalPositionError
         yield X, Y+self.direction
         if Y==self.pawn_start:
             yield X, Y+2*self.direction

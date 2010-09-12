@@ -9,8 +9,14 @@ class Square(object):
     def __unicode__(self):
         return unicode(self.piece)
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
     def __repr__(self):
-        return unicode(self.piece)
+        return '<Square (%d,%d) %s %s>' %(self.x, self.y, self.piece.colour, self.piece.name)
+
+    def __eq__(self, other):
+        return unicode(self) == unicode(other)
 
     def get_moves(self):
         for move in self.piece.general_moves(self.x, self.y):

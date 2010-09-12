@@ -15,6 +15,9 @@ class Colour(object):
     def __nonzero__(self):
         return self.is_black
 
+    def __eq__(self, other):
+        return self.is_black == other.is_black
+
     def __unicode__(self):
         return 'BLACK' if self.is_black else 'WHITE'
 
