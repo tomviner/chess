@@ -19,7 +19,7 @@ class Board(object):
             for x, initial in enumerate(rank):
                 if initial != EMPTY_SQUARE:
                     piece = Piece.from_initial(initial)
-                    self.place((x,7-y), Square(x, y, piece))
+                    self.place((x,7-y), Square(x, y, piece, self))
 
     def place_from_dict(self, dic):
         for (x,y), piece in dic.iteritems():
@@ -30,7 +30,7 @@ class Board(object):
     def place(self, xy, piece):
         if xy in ALL_SQUARES:
             x, y = xy
-            self.board[7-y][x] = Square(x, y, piece)
+            self.board[7-y][x] = Square(x, y, piece, self)
 
     def get_moves_from_square(self, square):
         piece_to_xys = square.piece.general_moves(*square.xy)
@@ -44,6 +44,14 @@ class Board(object):
         self.place_from_dict(d)
         self.place(XY, '.')
 
+    def place_all_moves(self):
+        for square in self.squares:
+            if square == EMPTY_SQUARE:
+                continue
+            moves = self.get_moves_from_square(square)
+            for move in moves:
+                pass
+
     @property
     def squares(self):
         return [s for row in self.board for s in row]
@@ -51,6 +59,10 @@ class Board(object):
     @property
     def pieces(self):
         return [s.piece for s in self.squares if s!=EMPTY_SQUARE]
+
+    @property
+    def occupied_positions(self):
+        return [s.xy for s in self.squares if s!=EMPTY_SQUARE]
 
     @staticmethod
     def random_square():
@@ -75,6 +87,7 @@ class Board(object):
 
 if __name__ == '__main__':
     b = Board(START)
-    tb = TextBoard(Board(START))
+    #b.
+    tb = TextBoard(b)
     print unicode(tb)
-    t = TextBoard.demo('KqRbNpP')
+    #t = TextBoard.demo('KqRbNpP')

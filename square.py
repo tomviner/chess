@@ -1,12 +1,10 @@
 class Square(object):
-    def __init__(self, x, y, piece=None):
+    def __init__(self, x, y, piece, board):
         self.x = x
         self.y = y
+        self.xy = x,y
         self.piece = piece
-
-    @property
-    def xy(self):
-        return (x, y)
+        self.board = board
 
     def __unicode__(self):
         return unicode(self.piece)
@@ -19,8 +17,7 @@ class Square(object):
             if move in ALL_SQUARES:
                 yield Move(self.xy, move)
 
-    def practical_moves(self, X, Y, board):
-        #if 
-        for x, y in self.get_moves(X, Y):
-            if board.path_blocked(self.xy, (X,Y)):
-                pass
+    def practical_moves(self, X, Y):
+        for move in self.get_moves(X, Y):
+            if move.path_clear(self.board):
+                yield move

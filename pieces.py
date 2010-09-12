@@ -52,7 +52,7 @@ class Piece(object):
         """solely implemented by Pawn subclass
         all other pieces have take==move"""
         raise TakesAreMovesError
-        
+
     def general_capturing_moves(self, X, Y):
         try:
             return self.solely_capturing_moves(self, X, Y)
