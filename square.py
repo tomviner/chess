@@ -17,7 +17,7 @@ class Square(object):
     def get_moves(self):
         for move in self.piece.general_moves(self.x, self.y):
             if move in ALL_SQUARES:
-                yield move
+                yield Move(self.xy, move)
 
     def practical_moves(self, X, Y, board):
         #if 
