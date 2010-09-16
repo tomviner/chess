@@ -49,7 +49,7 @@ class Move(object):
     @property
     def valid_end(self):
         end = self.board.look_in(self.xy2)
-        if end == EMPTY_SQUARE:
+        if not end.occupied:
             return True
         if end.piece.colour == self.piece.colour:
             # can't capture own piece

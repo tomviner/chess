@@ -9,7 +9,7 @@ EMPTY_SQUARE = ' '
 
 class Board(object):
     def __init__(self, layout=None):
-        self.board = [list([EMPTY_SQUARE]*8) for _ in range(8)]
+        self.board = [[Square(y, x, None, self) for y in range(8)] for x in range(8)]
         if isinstance(layout, basestring):
             self.place_from_string(layout)
         elif isinstance(layout, dict):
@@ -57,17 +57,17 @@ class Board(object):
 
     @property
     def occupied_squares(self):
-        return [s for row in self.board for s in row if s!=EMPTY_SQUARE]
+        return [s for row in self.board for s in row if getattr(s,'occupied',None)]
 
     @property
     def pieces(self):
-        return [s.piece for s in self.squares if s!=EMPTY_SQUARE]
+        return [s.piece for s in self.squares if getattr(s,'occupied',None)]
 
     @property
     def occupied(self):
-        return [s.xy for s in self.squares if s!=EMPTY_SQUARE]
+        return [s.xy for s in self.squares if getattr(s,'occupied',None)]
 
-    @property
+    #@property
     @staticmethod
     def random_xy():
         return random.choice(ALL_SQUARES)
@@ -99,6 +99,8 @@ class Board(object):
 
 
     def get_moves_from_square(self, square):
+        if not square.piece:
+            raise StopIteration
         piece_to_xys = list(square.piece.general_moves(*square.xy))
         piece_moves = [Move(square, to_xy, self) for to_xy in piece_to_xys]
         moves = piece_moves[:]
@@ -126,5 +128,6 @@ if __name__ == '__main__':
     #b = b1.place_all_moves()
     #tb = TextBoard(b)
     #print unicode(tb)
+    t = TextBoard.demo()
     t = TextBoard.demo2()
 

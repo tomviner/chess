@@ -1,3 +1,5 @@
+from pieces import Piece
+
 class Square(object):
     def __init__(self, x, y, piece, board):
         self.x = x
@@ -6,8 +8,12 @@ class Square(object):
         self.piece = piece
         self.board = board
 
+    @property
+    def occupied(self):
+        return isinstance(self.piece, Piece)
+
     def __unicode__(self):
-        return unicode(self.piece)
+        return unicode(self.piece or ' ')
 
     def __str__(self):
         return unicode(self).encode('utf-8')

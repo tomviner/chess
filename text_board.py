@@ -98,10 +98,13 @@ class TextBoard(object):
 
     def demo2(cls, pieces='KqRbNpP'):
         board_walk = cls.make_empty(10)
+        b = Board(START)
         for initial in pieces:
-            b = Board(START)
             sq = b.random_occupied_square
-            ms = b.get_moves_from_square(sq)
+            try:
+                ms = b.get_moves_from_square(sq)
+            except pieces.IllegalPositionError:
+                pass
             for m in ms:
                 b.place(m.xy2, m.piece)
             b.place(sq.xy, '.')

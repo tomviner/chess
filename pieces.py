@@ -134,7 +134,9 @@ class Pawn(Piece):
 
     def basic_moves(self, X, Y):
         if Y == self.pawn_start-self.direction:
-            raise IllegalPositionError
+            raise IllegalPositionError, \
+                "%s pawn can't be behind start rank y=%s. at (%d,%d)" %(
+                self.colour, self.pawn_start-self.direction, X, Y)
         yield X, Y+self.direction
         if Y==self.pawn_start:
             yield X, Y+2*self.direction
