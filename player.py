@@ -6,12 +6,15 @@ class Player(object):
         self.colour = colour
         self.name = name or str(colour)
 
-    def get_move(self, msg = '', inputer=raw_input):
+    def get_move(self, msg = '', inputer=raw_input, DEBUG=False):
+        self.DEBUG = DEBUG
         while True:
             input = inputer('\n'.join((msg, 'please move %s (%s)' %(self.name, self.colour))).strip()+': ')
             try:
                 return self.parse_move(input)
-            except (InputError, IllegalMoveError), e:
+            except InputError, e:
+                if self.DEBUG:
+                    raise
                 msg = e.message
 
     def parse_square(self, input):

@@ -1,7 +1,7 @@
 import random
 
 from colour import Colour
-from exceptions import *
+from exception import *
 
 
 ALL_SQUARES = [(x, y) for x in range(8) for y in range(8)]

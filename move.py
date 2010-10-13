@@ -1,5 +1,3 @@
-EMPTY_SQUARE = ' '
-
 class Move(object):
     def __init__(self, start_square, end_xy, board):
         self.square = start_square
@@ -49,7 +47,8 @@ class Move(object):
     @property
     def valid_end(self):
         end = self.board.look_in(self.xy2)
-        if not end.occupied:
+        print end
+        if str(end) in '. ':
             return True
         if end.piece.colour == self.piece.colour:
             # can't capture own piece

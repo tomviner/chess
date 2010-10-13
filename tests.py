@@ -1,5 +1,6 @@
 #http://www.voidspace.org.uk/python/articles/unittest2.shtml
 import unittest2 as unittest
+import sys
 
 from colour import *
 from pieces import *
@@ -74,9 +75,31 @@ class InputCycler(object):
         self.inputs = list(inputs)
 
     def __call__(self, prompt):
-        return self.inputs.pop()
+        if self.inputs:
+            return self.inputs.pop()
+        raise ResignError("InputCycler has run out of inputs")
+        #sys.exit()
 
 class GameTest(unittest.TestCase):
     def testgame(self):
-        g = Game(InputCycler(['a2 a4', 'a3 b7']))
+        with self.assertRaises(InputError):
+            g = Game(InputCycler(['wrong']))
+        with self.assertRaises(InputError):
+            g = Game(InputCycler(['wro ng']))
+        with self.assertRaises(InputError):
+            g = Game(InputCycler(['a2 QQ']))
+        g = Game(InputCycler(['a2 a4']))
+
+        with self.assertRaises(WrongColourError):
+            g = Game(InputCycler(['c7 c6']))
+        g = Game(InputCycler(['a2 a3', 'c7 c6']))
+
+        with self.assertRaises(EmptySquareError):
+            g = Game(InputCycler(['a4 a5']))
+
+        with self.assertRaises(IllegalForPieceError):
+            g = Game(InputCycler(['a2 c4']))
+        # knight move
+        g = Game(InputCycler(['b1 c3']))
+
 

@@ -79,10 +79,10 @@ class Move(object):
                 msg = 'expecting a straight line move, got %d, %d' %self.delta
                 raise IllegalMoveError(msg)
 
+        if not self.valid_end:
+            raise IllegalMoveError("You can't move there!")
+
         if not (self.piece.can_jump or self.path_clear):
             raise IllegalMoveError('There are pieces in the way')
 
-        if not self.valid_end:
-            raise IllegalMoveError("You can't move there!")
-            
         return True
