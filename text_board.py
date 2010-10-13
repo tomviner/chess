@@ -85,12 +85,18 @@ class TextBoard(object):
 
 
     @classmethod
-    def demo(cls, pieces='KqRbNpP'):
+    def demo(cls, demo_pieces='KqRbNpP'):
         board_walk = cls.make_empty(10)
-        for initial in pieces:
+        for initial in demo_pieces:
             p = Piece.from_initial(initial)
             b = Board()
-            b.place_moves_from_piece_at(p, Board.random_xy())
+            while True:
+                try:
+                    b.place_moves_from_piece_at(p, Board.random_xy())
+                except IllegalPositionError, e:
+                    print 'skipping an illegal position', e 
+                else:
+                    break
             board_walk += cls(b)
         print unicode(board_walk)
         return board_walk
@@ -103,7 +109,7 @@ class TextBoard(object):
             sq = b.random_occupied_square
             try:
                 ms = b.get_moves_from_square(sq)
-            except pieces.IllegalPositionError:
+            except IllegalPositionError:
                 pass
             for m in ms:
                 b.place(m.xy2, m.piece)

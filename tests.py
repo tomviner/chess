@@ -1,9 +1,12 @@
+#http://www.voidspace.org.uk/python/articles/unittest2.shtml
 import unittest2 as unittest
 
 from colour import *
 from pieces import *
 from board import *
 from rules import *
+from player import *
+from game import *
 
 class ColourTest(unittest.TestCase):
     def testInit(self):
@@ -65,4 +68,15 @@ class BoardTest(unittest.TestCase):
             # board uses 0 to 7 squared
             b.place((8, 8), Queen())
         b.place((2,3), Rook())
+
+class InputCycler(object):
+    def __init__(self, inputs):
+        self.inputs = list(inputs)
+
+    def __call__(self, prompt):
+        return self.inputs.pop()
+
+class GameTest(unittest.TestCase):
+    def testgame(self):
+        g = Game(InputCycler(['a2 a4', 'a3 b7']))
 

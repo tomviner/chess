@@ -2,7 +2,7 @@ from pieces import *
 from text_board import *
 from rules import *
 from square import *
-from move import *
+from moves import *
 import notation
 
 EMPTY_SQUARE = ' '

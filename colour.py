@@ -16,7 +16,11 @@ class Colour(object):
         return self.is_black
 
     def __eq__(self, other):
-        return self.is_black == other.is_black
+        return str(self) == str(other)
+        #return str(self.is_black == other.is_black
+
+    def __cmp__(self, other):
+        return cmp(self.is_black, other.is_black)
 
     def __unicode__(self):
         return 'BLACK' if self.is_black else 'WHITE'
