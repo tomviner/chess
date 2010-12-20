@@ -1,0 +1,1 @@
+replace colour by is_black

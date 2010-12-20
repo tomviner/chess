@@ -8,6 +8,7 @@ from board import *
 from rules import *
 from player import *
 from game import *
+from exception import *
 
 class ColourTest(unittest.TestCase):
     def testInit(self):
@@ -101,5 +102,7 @@ class GameTest(unittest.TestCase):
             g = Game(InputCycler(['a2 c4']))
         # knight move
         g = Game(InputCycler(['b1 c3']))
+
+        g = Game(InputCycler(['b2 b4', 'b8 b6']))
 
 
