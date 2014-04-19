@@ -6,6 +6,6 @@ install:
     - "pip install -r requirements/base.txt"
     - "pip install -r requirements/test.txt"
 # command to run tests
-script: py.test --cov *.py
+script: py.test -v --cov *.py
 after_success:
   - coveralls

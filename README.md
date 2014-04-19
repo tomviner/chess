@@ -1,3 +1,5 @@
+![build monitor](https://travis-ci.org/tomviner/chess.svg "build monitor")
+
 chess
 =====
 
