@@ -1,0 +1,7 @@
+ipdb==0.8
+ipython==2.0.0
+
+pytest==2.5.2
+py==1.4.20
+rerun==1.0.19
+coverage==3.7.1
