@@ -1,4 +1,5 @@
 ![build monitor](https://travis-ci.org/tomviner/chess.svg "build monitor")
+
 [![Coverage Status](https://coveralls.io/repos/tomviner/chess/badge.png?branch=master)](https://coveralls.io/r/tomviner/chess?branch=master)
 
 chess
