@@ -12,3 +12,14 @@ def test_board():
     ...
     """).strip()
     assert b.display() == empty_board
+
+def test_place_piece():
+    b = Board(3, 3)
+    b.place(1, 2, 'X')
+    exed_board = dedent(
+    """
+    .X.
+    ...
+    ...
+    """).strip()
+    assert b.display() == exed_board
