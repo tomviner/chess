@@ -23,3 +23,17 @@ def test_place_piece():
     ...
     """).strip()
     assert b.display() == exed_board
+
+def test_place_more_pieces():
+    b = Board(2, 2)
+    b.place(0, 0, 'a')
+    b.place(0, 0, 'a')
+    b.place(0, 0, 'a')
+    b.place(0, 0, 'a')
+    exed_board = dedent(
+    """
+    .X.
+    ...
+    ...
+    """).strip()
+    assert b.display() == exed_board
