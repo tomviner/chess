@@ -15,4 +15,9 @@ class Board(object):
         return '\n'.join(ranks)
 
     def place(self, x, y, piece):
+        """
+        Place a piece at:
+            x - the column, starting from 0, LTR
+            y - the rank, starting from 0, bottom up
+        """
         self._board[self.height-y-1][x] = piece

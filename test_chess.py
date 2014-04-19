@@ -26,14 +26,13 @@ def test_place_piece():
 
 def test_place_more_pieces():
     b = Board(2, 2)
-    b.place(0, 0, 'a')
-    b.place(0, 0, 'a')
-    b.place(0, 0, 'a')
-    b.place(0, 0, 'a')
+    b.place(0, 1, 'a')
+    b.place(1, 1, 'b')
+    b.place(0, 0, 'c')
+    b.place(1, 0, 'd')
     exed_board = dedent(
     """
-    .X.
-    ...
-    ...
+    ab
+    cd
     """).strip()
     assert b.display() == exed_board
