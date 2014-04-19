@@ -9,6 +9,12 @@ class Board(object):
             row = [EMPTY_SQUARE] * width
             self._board.append(row)
 
+    def _get(self, x, y):
+        return self._board[self.height-y-1][x]
+
+    def _set(self, x, y, piece):
+        self._board[self.height-y-1][x] = piece
+
     def display(self):
         ranks = [''.join(rank) for rank in self._board]
         return '\n'.join(ranks)
@@ -22,6 +28,9 @@ class Board(object):
         self._board[self.height-y-1][x] = piece
 
     def move(self, x1, y1, x2, y2):
-        piece = self._board[self.height-y1-1][x1]
-        self._board[self.height-y1-1][x1] = EMPTY_SQUARE
-        self._board[self.height-y2-1][x2] = piece
+        """
+        Move the piece at x1, xy to x2, y2
+        """
+        piece = self._get(x1, y1)
+        self._set(x1, y1, EMPTY_SQUARE)
+        self._set(x2, y2, piece)
