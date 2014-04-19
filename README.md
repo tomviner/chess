@@ -19,5 +19,5 @@ Stage 1
     - display itself
     - move pieces
 - A **game** that can
-    - intialise a board
-    - take input from the players
+    - initialise a board
+    - take input from a player
