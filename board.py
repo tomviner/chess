@@ -1,3 +1,6 @@
+from exception import BadMove
+
+
 EMPTY_SQUARE = '.'
 
 class Board(object):
@@ -32,5 +35,7 @@ class Board(object):
         Move the piece at x1, xy to x2, y2
         """
         piece = self._get(x1, y1)
+        if piece == EMPTY_SQUARE:
+            raise BadMove
         self._set(x1, y1, EMPTY_SQUARE)
         self._set(x2, y2, piece)

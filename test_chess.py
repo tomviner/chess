@@ -1,6 +1,9 @@
 from textwrap import dedent
 
+import pytest
+
 from board import Board
+from exception import BadMove
 
 
 def test_board():
@@ -48,3 +51,8 @@ def test_move_piece():
     X.
     """).strip()
     assert b.display() == expected_board
+
+def test_move_empty_square():
+    b = Board(2, 2)
+    with pytest.raises(BadMove):
+        b.move(0, 0, 1, 1)
