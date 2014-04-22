@@ -1,1 +1,1 @@
-py.test --cov *.py *.py
+py.test --cov . *.py

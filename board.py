@@ -1,8 +1,13 @@
 from exception import BadMove
 
 
-
 class Board(object):
+    """
+    A board that can:
+        place pieces
+        display itself
+        move pieces
+    """
     empty_square_char = '.'
 
     def __init__(self, height, width):
