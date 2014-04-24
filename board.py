@@ -18,6 +18,17 @@ class Board(object):
             row = [self.empty_square_char] * width
             self._board.append(row)
 
+    @classmethod
+    def from_string(cls, initial):
+        rows = initial.splitlines()
+        height = len(rows)
+        width = len(rows[0])
+        board = cls(height, width)
+        for y, row in enumerate(rows):
+            for x, square in enumerate(row):
+                board._set(x, y, square)
+        return board
+
     def _get(self, x, y):
         return self._board[y][x]
 
