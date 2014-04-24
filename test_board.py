@@ -34,6 +34,7 @@ def test_place_more_pieces():
         (0, 0): 'c', (1, 0): 'd'}
     for (x, y), piece in grid.items():
         b.place(x, y, piece)
+        assert b.look(x, y) == piece
     expected_board = dedent(
     """
     ab

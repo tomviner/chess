@@ -19,14 +19,15 @@ class Board(object):
             self._board.append(row)
 
     def _get(self, x, y):
-        return self._board[self.height-y-1][x]
+        return self._board[y][x]
 
     def _set(self, x, y, piece):
-        self._board[self.height-y-1][x] = piece
+        self._board[y][x] = piece
 
     def display(self):
         ranks = [''.join(rank) for rank in self._board]
         return '\n'.join(ranks)
+    __repr__ = display
 
     def place(self, x, y, piece):
         """
@@ -34,14 +35,29 @@ class Board(object):
             x - the column, starting from 0, LTR
             y - the rank, starting from 0, bottom up
         """
-        self._board[self.height-y-1][x] = piece
+        self._set(x, self.height-y-1, piece)
+
+    def look(self, x, y):
+        """
+        Get the piece (character) at:
+            x - the column, starting from 0, LTR
+            y - the rank, starting from 0, bottom up
+        Returns None if empty
+        """
+        piece = self._get(x, self.height-y-1)
+        if piece == self.empty_square_char:
+            return None
+        return piece
 
     def move(self, x1, y1, x2, y2):
         """
         Move the piece at x1, xy to x2, y2
         """
-        piece = self._get(x1, y1)
-        if piece == self.empty_square_char:
+        piece = self.look(x1, y1)
+        if piece is None:
             raise BadMove
-        self._set(x1, y1, self.empty_square_char)
-        self._set(x2, y2, piece)
+        self.place(x1, y1, self.empty_square_char)
+        self.place(x2, y2, piece)
+
+
+
