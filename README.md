@@ -24,3 +24,5 @@ Stage 1
 - A **game** that can
     - initialise a board
     - take input from a player
+        - ultimately from the web interface
+        - from raw_input for now
