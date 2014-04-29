@@ -26,3 +26,6 @@ Stage 1
     - take input from a player
         - ultimately from the web interface
         - from raw_input for now
+- Using **chess notation**
+    - [Algebraic chess notation](http://en.wikipedia.org/wiki/Algebraic_chess_notation)
+    - Validating input
