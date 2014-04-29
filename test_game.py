@@ -1,7 +1,8 @@
 from textwrap import dedent
 
-from board import Board
-from game import Game
+from mock import patch
+
+from .game import Game
 
 
 def test_game_initialisation():

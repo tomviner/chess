@@ -1,4 +1,5 @@
-from board import Board
+from .board import Board
+from .exception import InputError
 
 
 class Game(object):

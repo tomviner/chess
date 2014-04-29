@@ -2,8 +2,8 @@ from textwrap import dedent
 
 import pytest
 
-from board import Board
-from exception import BadMove
+from .board import Board
+from .exception import BadMove
 
 
 def test_board():

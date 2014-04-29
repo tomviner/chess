@@ -1,4 +1,4 @@
-from exception import BadMove
+from .exception import BadMove
 
 
 class Board(object):
@@ -69,6 +69,3 @@ class Board(object):
             raise BadMove
         self.place(x1, y1, self.empty_square_char)
         self.place(x2, y2, piece)
-
-
-
