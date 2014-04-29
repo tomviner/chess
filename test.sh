@@ -1,1 +1,1 @@
-py.test --cov-report term-missing --cov . chess/*.py
+py.test --cov-report term-missing --cov . chess

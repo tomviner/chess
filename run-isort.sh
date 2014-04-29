@@ -1,1 +1,1 @@
-isort *.py
+isort chess/*.py

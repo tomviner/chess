@@ -38,5 +38,5 @@ def test_game_initialisation():
 
 @patch('chess.game.raw_input', create=True)
 def test_taking_input(mock_raw_input):
-    mock_raw_input.return_value = 'e2 e4'
-    assert Game(initial=' ').get_move() == ((4, 1), (4, 3))
+    mock_raw_input.return_value = 'b2 e4'
+    assert Game(initial='.').get_move() == ((1, 1), (4, 3))

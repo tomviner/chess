@@ -1,5 +1,4 @@
 from .board import Board
-from .exception import InputError
 
 
 class Game(object):
@@ -19,12 +18,13 @@ class Game(object):
         Capture a move from the user,
         and return parsed to coords
         """
-
-    def parse_input(self):
-        """
-        Convert the input string to a pair of move strings
-        >>> Game(' ').parse_input()
-        """
-
-    def parse_move(self):
-        pass
+        s = raw_input('Move: ')
+        from_, to = s.strip().lower().split()
+        def parse_move(coord_string):
+            import string
+            print coord_string
+            column_letter, row_number = coord_string
+            x = string.letters.index(column_letter)
+            y = string.digits[1:].index(row_number)
+            return x, y
+        return parse_move(from_), parse_move(to)
