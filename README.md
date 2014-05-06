@@ -29,3 +29,59 @@ Stage 1
 - Using **chess notation**
     - [Algebraic chess notation](http://en.wikipedia.org/wiki/Algebraic_chess_notation)
     - Validating input
+
+
+User Stories
+============
+
+- As a **chess player** I want **to view a chess board** so that **I can play chess**
+
+- As a **chess player** I want **to submit a move** so that **I can attempt to checkmate my friend**
+
+- As a **chess player** I want **to see the other player's moves** so that **I can defend against my friend's moves**
+
+- As a **chess player** I want **the rules of chess to be enforced** so that **my friend doesn't cheat - or me make an illegal move accidentally**
+
+- As a **chess player** I want **to see who's turn it is** so that **I know when to move**
+
+- As a **chess player** I want **a win/lose/draw to be displayed** so that **my friend and I know who's won**
+
+Scenarios
+=========
+
+Initial Board from Players perspective
+--------------------------------------
+
+**GIVEN** I'm playing as White
+**WHEN** I start a game of chess
+**THEN** I should see a chess board in the standard initial layout, with White in the lower half
+
+**GIVEN** I'm playing as Black
+**WHEN** I start a game of chess
+**THEN** I should see a chess board in the standard initial layout, with Black in the lower half
+
+Moving a piece
+--------------
+
+**GIVEN** We have just started a game of chess
+**AND** I'm White
+**WHEN** I advance my Queen's pawn two squares
+**THEN** My friend should see my move
+
+Taking a piece
+--------------
+
+**GIVEN** A game has advanced to just one Rook each
+**AND** It's my turn, and the Rooks share a rank
+**WHEN** I take my friend's Rook
+**THEN** His piece is removed from the board, and mine is placed there
+
+Rules of Chess enforced
+-----------------------
+
+See who's turn it is
+--------------------
+
+Detect endgame state
+--------------------
+
