@@ -1,4 +1,5 @@
 from .board import Board
+from .exception import InputError
 
 
 class Game(object):
@@ -28,3 +29,4 @@ class Game(object):
             y = string.digits[1:].index(row_number)
             return x, y
         return parse_move(from_), parse_move(to)
+
