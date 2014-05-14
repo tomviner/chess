@@ -6,7 +6,6 @@ from mock import patch
 from .exception import InputError
 from .game import Game
 
-
 CHESS = dedent(
     """
     rnbkqbnr
@@ -40,7 +39,7 @@ def test_game_initialisation():
 
     for game_layout in (DRAUGHTS, CHESS):
         game = Game(initial=game_layout)
-        assert game.board_display() == game_layout
+        assert game.display_board() == game_layout
 
 @patch('chess.game.raw_input', create=True)
 def test_taking_input(mock_raw_input):
