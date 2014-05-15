@@ -4,26 +4,16 @@ from .exception import InputError
 
 
 class Notation(object):
+    """
+    Convert Algebraic chess notation into 0-indexed start
+    stop coordinates
+    http://en.wikipedia.org/wiki/Algebraic_chess_notation
+    >>> Notation(width=8, height=8).parse_move("d2 d4")
+    ((3, 1), (3, 3))
+    """
     def __init__(self, width, height):
         self.column_letters = string.letters[:width].lower()
         self.row_digits = string.digits[1:height+1]
-    # @staticmethod
-    # def parse_input(s):
-    #     """
-    #     Convert the input string to a pair of move strings
-    #     >>> ChessNotation.parse_input()
-    #     """
-
-    # @staticmethod
-    # def parse_move(s):
-    #     """
-    #     Convert a single move string into coords
-    #     """
-
-    #     from_, to = ChessNotation.parse_input(s)
-    #     from_ = ChessNotation.parse_move(from_)
-    #     to = ChessNotation.parse_move(to)
-
 
     def parse_move(self, move_string):
         try:

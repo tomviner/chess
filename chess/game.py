@@ -9,10 +9,9 @@ class Game(object):
         take input from a player
     """
     def __init__(self, initial):
-        self._board = Board.from_string(initial)
-        width = self._board.width
-        height = self._board.height
-        self.notation = Notation(width, height)
+        board = Board.from_string(initial)
+        self.notation = Notation(board.width, board.height)
+        self._board = board
 
     def display_board(self):
         return self._board.display()
@@ -21,8 +20,7 @@ class Game(object):
         """
         Capture a move from the user,
         and return parsed to coords:
-        >>> Game().get_move('b2 e4')
-        ((1, 1), (4, 3))
+        b2 e4 --> ((1, 1), (4, 3))
         """
         s = raw_input('Move: ')
         cleaned_input = s.strip().lower()
