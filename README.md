@@ -28,8 +28,34 @@ Stage 1
         - from raw_input for now
 - Using **chess notation**
     - [Algebraic chess notation](http://en.wikipedia.org/wiki/Algebraic_chess_notation)
-    - Validating input
+    - Validating input in terms of boundries
 
+Further Stages
+==============
+
+Normal Moves
+------------
+
+- The ways each Piece can move
+- Pawn's initial move
+- Pawn taking
+
+Special Moves
+-------------
+
+- (Rule - knowledge requirement)
+- Castling - past moves of king & rook
+- En passant - previous move of pawn
+- Pawn promotion - user choice of piece or assume queen
+- Stalemate - last 50 moves
+
+End of the Game
+---------------
+
+- (Check)
+- Checkmate
+- Stalemate
+- Resignation
 
 User Stories
 ============
@@ -49,8 +75,8 @@ User Stories
 Scenarios
 =========
 
-Initial Board from Players perspective
---------------------------------------
+Initial Board from Players' perspective
+---------------------------------------
 
 **GIVEN** I'm playing as White
 **WHEN** I start a game of chess
