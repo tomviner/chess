@@ -1,5 +1,6 @@
 from .board import Board
 from .notation import Notation
+from .exception import InputError
 
 
 class Game(object):
@@ -26,3 +27,15 @@ class Game(object):
         cleaned_input = s.strip().lower()
 
         return self.notation.parse_move(cleaned_input)
+
+    def run(self):
+        """
+        Attempt to get valid moves, and apply them to the
+        board. Keep asking upon invalid moves.
+        """
+        while True:
+            try:
+                (x1, y1), (x2, y2) = self.get_move()
+            except InputError:
+                continue
+            self._board.move(x1, y1, x2, y2)
