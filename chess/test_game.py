@@ -28,15 +28,15 @@ def test_game_initialisation():
         """
     ).strip()
 
-    for game_layout in (DRAUGHTS, CHESS):
+    for game_layout in (DRAUGHTS, ASCII_START_BOARD):
         game = Game(initial=game_layout)
         assert game.display_board() == game_layout
 
 
-@patch('chess.game.raw_input', create=True)
+@patch('chess.user.raw_input', create=True)
 def test_taking_input(mock_raw_input):
     mock_raw_input.return_value = 'b2 e4'
-    assert Game(initial=CHESS).get_move() == ((1, 1), (4, 3))
+    assert Game(initial=ASCII_START_BOARD).get_move() == ((1, 1), (4, 3))
 
 
 @pytest.mark.parametrize("input_move", (
@@ -58,7 +58,7 @@ def test_bad_input(mock_raw_input, input_move):
     """
     mock_raw_input.return_value = input_move
     with pytest.raises(InputError):
-        Game(initial=CHESS).get_move()
+        Game(initial=ASCII_START_BOARD).get_move()
 
 
 @pytest.mark.parametrize("input_move", (
@@ -69,7 +69,7 @@ def test_bad_input(mock_raw_input, input_move):
 @patch('chess.user.raw_input', create=True)
 def test_size_dependant(mock_raw_input, input_move):
     mock_raw_input.return_value = input_move
-    full_size_board = CHESS
+    full_size_board = ASCII_START_BOARD
     dummy_tiny_board = '.'
     with pytest.raises(InputError):
         Game(initial=dummy_tiny_board).get_move()
@@ -99,12 +99,8 @@ def test_run_game(mock_cmd_line_user):
         'e4 c6',  # move up two, across two: we have no
                   # piece restrictions as yet!
     )
-    mock_raw_input.side_effect = iter(move_knight_thrice)
-    game = Game(initial=CHESS)
-    try:
-        game.run()
-    except StopIteration:
-        pass
-    assert game.display_board() == MOVED_CHESS
-    assert mock_raw_input.call_count == \
-        len(move_knight_thrice) + 1 # for the final StopIteration
+    mock_cmd_line_user.side_effect = iter(move_knight_thrice)
+    game = Game(initial=ASCII_START_BOARD)
+    assert game.display_board() == MOVED_ASCII_START_BOARD
+    assert mock_cmd_line_user.call_count == \
+        len(move_knight_thrice) + 1  # for the final StopIteration

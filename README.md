@@ -30,6 +30,12 @@ Stage 1
     - [Algebraic chess notation](http://en.wikipedia.org/wiki/Algebraic_chess_notation)
     - Validating input in terms of boundries
 
+Stage 2
+-------
+- The **game** now can:
+    - alternate between two users
+    - follow basic rules of taking
+
 Further Stages
 ==============
 

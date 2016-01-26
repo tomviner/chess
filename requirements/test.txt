@@ -8,3 +8,5 @@ py==1.4.20
 cov-core==1.7
 pytest-cov==1.6
 coverage==3.7.1
+
+isort
