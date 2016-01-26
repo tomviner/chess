@@ -14,13 +14,14 @@ class Board(object):
         self.height = height
         self.width = width
         self._board = []
-        for y in xrange(height):
+        for _ in xrange(height):
             row = [self.empty_square_char] * width
             self._board.append(row)
 
     @classmethod
     def from_string(cls, initial):
         rows = initial.splitlines()
+        rows.reverse()
         height = len(rows)
         width = len(rows[0])
         board = cls(height, width)
@@ -37,7 +38,7 @@ class Board(object):
 
     def display(self):
         ranks = [''.join(rank) for rank in self._board]
-        return '\n'.join(ranks)
+        return '\n'.join(reversed(ranks))
     __repr__ = display
 
     def place(self, x, y, piece):
@@ -46,7 +47,7 @@ class Board(object):
             x - the column, starting from 0, LTR
             y - the rank, starting from 0, bottom up
         """
-        self._set(x, self.height-y-1, piece)
+        self._set(x, y, piece)
 
     def look(self, x, y):
         """
@@ -55,7 +56,7 @@ class Board(object):
             y - the rank, starting from 0, bottom up
         Returns None if empty
         """
-        piece = self._get(x, self.height-y-1)
+        piece = self._get(x, y)
         if piece == self.empty_square_char:
             return None
         return piece
