@@ -101,6 +101,8 @@ def test_run_game(mock_cmd_line_user):
     )
     mock_cmd_line_user.side_effect = iter(move_knight_thrice)
     game = Game(initial=ASCII_START_BOARD)
+    for msg in game.run():
+        print msg
     assert game.display_board() == MOVED_ASCII_START_BOARD
     assert mock_cmd_line_user.call_count == \
         len(move_knight_thrice) + 1  # for the final StopIteration
