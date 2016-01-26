@@ -9,22 +9,24 @@ from .exception import BadMove
 def test_board():
     b = Board(3, 3)
     empty_board = dedent(
-    """
-    ...
-    ...
-    ...
-    """).strip()
+        """
+        ...
+        ...
+        ...
+        """
+    ).strip()
     assert b.display() == empty_board
 
 def test_place_piece():
     b = Board(3, 3)
     b.place(1, 2, 'X')
     expected_board = dedent(
-    """
-    .X.
-    ...
-    ...
-    """).strip()
+        """
+        .X.
+        ...
+        ...
+        """
+    ).strip()
     assert b.display() == expected_board
 
 def test_place_more_pieces():
@@ -36,10 +38,11 @@ def test_place_more_pieces():
         b.place(x, y, piece)
         assert b.look(x, y) == piece
     expected_board = dedent(
-    """
-    ab
-    cd
-    """).strip()
+        """
+        ab
+        cd
+        """
+    ).strip()
     assert b.display() == expected_board
 
 def test_move_piece():
@@ -47,10 +50,11 @@ def test_move_piece():
     b.place(1, 1, 'X')
     b.move(1, 1, 0, 0)
     expected_board = dedent(
-    """
-    ..
-    X.
-    """).strip()
+        """
+        ..
+        X.
+        """
+    ).strip()
     assert b.display() == expected_board
 
 def test_move_empty_square():

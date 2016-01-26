@@ -67,6 +67,6 @@ class Board(object):
         """
         piece = self.look(x1, y1)
         if piece is None:
-            raise BadMove
+            raise BadMove("No piece at {}".format((x1, y1)))
         self.place(x1, y1, self.empty_square_char)
         self.place(x2, y2, piece)
