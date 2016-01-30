@@ -11,6 +11,8 @@ class CmdLineUser(object):
 class FakeUser(object):
     """
     """
+    moves = deque([])
+
     def set_moves(self, moves):
         self.moves = deque(moves)
 
