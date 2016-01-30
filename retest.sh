@@ -1,1 +1,1 @@
-rerun --ignore .coverage ./test.sh
+rerun --ignore .coverage --ignore .cache ./test.sh

@@ -11,11 +11,13 @@ class Game(object):
         initialise a board
         take input from a player
     """
+    user_class = CmdLineUser
+
     def __init__(self, initial=ASCII_START_BOARD):
         board = Board.from_string(initial)
         self.notation = Notation(board.width, board.height)
         self._board = board
-        self.user = CmdLineUser()
+        self.user = self.user_class()
 
     def display_board(self):
         return self._board.display()
@@ -26,7 +28,8 @@ class Game(object):
         and return parsed to coords:
         b2 e4 --> ((1, 1), (4, 3))
         """
-        cleaned_input = self.user.get_move()
+        cleaned_input = self.user.get_move().strip().lower()
+        print cleaned_input
         return self.notation.parse_move(cleaned_input)
 
     def run(self):

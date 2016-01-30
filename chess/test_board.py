@@ -6,7 +6,7 @@ from .board import Board
 from .exception import BadMove
 
 
-def test_board():
+def test_empty_board():
     b = Board(3, 3)
     empty_board = dedent(
         """

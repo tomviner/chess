@@ -1,13 +1,20 @@
-class User(object):
-    """
-    """
-    def get_move(self):
-        return
+from collections import deque
 
-class CmdLineUser(User):
+class CmdLineUser(object):
     """
     """
+
     def get_move(self):
-        super(CmdLineUser, self).get_move()
         s = raw_input('Move: ')
-        return s.strip().lower()
+        return s
+
+class FakeUser(object):
+    """
+    """
+    def set_moves(self, moves):
+        self.moves = deque(moves)
+
+    def get_move(self):
+        if self.moves:
+            return self.moves.popleft()
+        raise StopIteration

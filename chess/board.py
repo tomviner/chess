@@ -13,6 +13,8 @@ class Board(object):
     def __init__(self, height, width):
         self.height = height
         self.width = width
+        # self._board is a list of lists
+        # starting with the bottom rank
         self._board = []
         for _ in xrange(height):
             row = [self.empty_square_char] * width
@@ -21,6 +23,8 @@ class Board(object):
     @classmethod
     def from_string(cls, initial):
         rows = initial.splitlines()
+        # initial starts from top of board, but our internal rep starts from
+        # the lowest rank first
         rows.reverse()
         height = len(rows)
         width = len(rows[0])
@@ -38,6 +42,8 @@ class Board(object):
 
     def display(self):
         ranks = [''.join(rank) for rank in self._board]
+        # as above, convert from internal rep (lowest rank first) to highest
+        # rank shown at top of display
         return '\n'.join(reversed(ranks))
     __repr__ = display
 
