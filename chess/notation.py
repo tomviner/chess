@@ -26,13 +26,13 @@ class Notation(object):
 
         return self.parse_square(from_), self.parse_square(to)
 
-    def parse_square(self, coord_string):
+    def parse_square(self, move_square):
         try:
-            column_letter, row_number = coord_string.strip()
+            column_letter, row_number = move_square.strip()
         except ValueError:
             raise InputError(
                 "Couldn't find square {!r}"
-                .format(coord_string))
+                .format(move_square))
 
         x = self.parse_column(column_letter)
         y = self.parse_row(row_number)
@@ -53,3 +53,11 @@ class Notation(object):
             raise InputError(
                 "Couldn't find row {!r} in {!r}"
                 .format(row_number, self.row_digits))
+
+    # reverse methods
+    def compose_square(self, coords):
+        column_num, row_num = coords
+        return '{}{}'.format(
+            self.column_letters[column_num],
+            self.row_digits[row_num],
+        )

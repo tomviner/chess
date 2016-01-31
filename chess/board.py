@@ -40,6 +40,14 @@ class Board(object):
     def _set(self, x, y, piece):
         self._board[y][x] = piece
 
+    def squares_used(self):
+        return [
+            (x, y)
+            for y, rank in enumerate(self._board)
+            for x, piece in enumerate(rank)
+            if piece != self.empty_square_char
+        ]
+
     def display(self):
         ranks = [''.join(rank) for rank in self._board]
         # as above, convert from internal rep (lowest rank first) to highest
@@ -73,6 +81,9 @@ class Board(object):
         """
         piece = self.look(x1, y1)
         if piece is None:
-            raise BadMove("No piece at {}".format((x1, y1)))
+            raise BadMove(
+                "No piece at {}",
+                (x1, y1)
+            )
         self.place(x1, y1, self.empty_square_char)
         self.place(x2, y2, piece)

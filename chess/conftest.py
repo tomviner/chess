@@ -6,5 +6,5 @@ from .user import FakeUser
 
 @pytest.fixture
 def fake_user(monkeypatch):
-    monkeypatch.setattr(Game, 'user_class', FakeUser)
+    monkeypatch.setattr(Game, 'default_user_class', FakeUser)
     return FakeUser()

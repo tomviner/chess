@@ -4,6 +4,9 @@ setup(
     name='chess',
     entry_points={
         'console_scripts':
-            ['chess.run:main'],
+            [
+                'chess=chess.run:cmdline_game',
+                'chess-demo=chess.run:random_game',
+            ],
     },
 )
