@@ -94,14 +94,14 @@ class TextBoard(object):
                 try:
                     b.place_moves_from_piece_at(p, Board.random_xy())
                 except IllegalPositionError, e:
-                    print 'skipping an illegal position', e 
+                    print 'skipping an illegal position', e
                 else:
                     break
             board_walk += cls(b)
         print unicode(board_walk)
         return board_walk
-    @classmethod
 
+    @classmethod
     def demo2(cls, pieces='KqRbNpP'):
         board_walk = cls.make_empty(10)
         b = Board(START)
